@@ -1,6 +1,6 @@
-from doubly_linked_list import DoublyLinkedList
 import sys
 sys.path.append('../doubly_linked_list')
+from doubly_linked_list import DoublyLinkedList
 
 
 class Queue:
@@ -9,8 +9,8 @@ class Queue:
         # Why is our DLL a good choice to store our elements?
         self.storage = DoublyLinkedList(None)
 
-    def __str__(self):
-        return f"size: {self.size}. storage: {self.storage}"
+    # def __str__(self):
+    #     return f"size: {self.size}. storage: {self.storage}"
 
     def enqueue(self, value):
         self.size += 1
