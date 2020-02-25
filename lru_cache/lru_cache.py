@@ -29,7 +29,6 @@ class LRUCache:
     def get(self, key):
         if key in self.storage:
             current = self.storage[key]
-            print("current : ", current)
             self.dll.move_to_end(current)
             return current.value[1]
         else:
@@ -62,16 +61,10 @@ class LRUCache:
             self.storage[key] = self.dll.tail
 
             self.count += 1
-            print("self.dll.head.value[0]", self.dll.head.value[0])
+            
         elif self.count >= self.limit:
-            print("count : ", self.count)
-            print("limit : ", self.limit)
-
-            print("self.dll.head : ", self.dll.head)
-            print("self.dll.head.value[0] : ", self.dll.head.value[0])
-
+            
             del self.storage[self.dll.head.value[0]]
             self.dll.remove_from_head()
-
             self.dll.add_to_tail((key, value))
             self.storage[key] = self.dll.tail
