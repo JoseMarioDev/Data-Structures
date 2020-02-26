@@ -1,6 +1,4 @@
 from doubly_linked_list import DoublyLinkedList
-import sys
-sys.path.append('../doubly_linked_list')
 
 
 class LRUCache:
@@ -14,9 +12,9 @@ class LRUCache:
 
     def __init__(self, limit=10):
         self.limit = limit
-        self.dll = DoublyLinkedList()
+        self.size = 0
+        self.order = DoublyLinkedList()
         self.storage = {}
-        self.count = 0
 
     """
     Retrieves the value associated with the given key. Also
@@ -28,9 +26,9 @@ class LRUCache:
 
     def get(self, key):
         if key in self.storage:
-            current = self.storage[key]
-            self.dll.move_to_end(current)
-            return current.value[1]
+            node = self.storage[key]
+            self.order.move_to_end(node)
+            return node.value[1]
         else:
             return None
 
@@ -48,23 +46,28 @@ class LRUCache:
     def set(self, key, value):
 
         if key in self.storage:
-
-            current = self.storage[key]
-            current.value = (key, value)
-
-            self.dll.move_to_end(current)
+            node = self.storage[key]
+            node.value = (key, value)
+            self.order.move_to_end(node)
             return
 
-        elif self.count < self.limit:
+        if self.size == self.limit:
+            del self.storage[self.order.head.value[0]]
+            self.order.remove_from_head()
+            self.size -= 1
 
-            self.dll.add_to_tail((key, value))
-            self.storage[key] = self.dll.tail
+        self.order.add_to_tail((key, value))
+        self.storage[key] = self.order.tail
+        self.size += 1
 
-            self.count += 1
-            
-        elif self.count >= self.limit:
-            
-            del self.storage[self.dll.head.value[0]]
-            self.dll.remove_from_head()
-            self.dll.add_to_tail((key, value))
-            self.storage[key] = self.dll.tail
+        # my original version, different from lecture
+        # elif self.size < self.limit:
+        #     self.order.add_to_tail((key, value))
+        #     self.storage[key] = self.order.tail
+        #     self.size += 1
+
+        # elif self.size >= self.limit:
+        #     del self.storage[self.order.head.value[0]]
+        #     self.order.remove_from_head()
+        #     self.order.add_to_tail((key, value))
+        #     self.storage[key] = self.order.tail
