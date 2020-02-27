@@ -35,32 +35,50 @@ class BinarySearchTree:
         #     self.left.insert(value)
         # elif value >= self.value and self.right is not None:
         #     self.right.insert(value)
-        
+
 
     # Return True if the tree contains the value
     # False if it does not
 
     def contains(self, target):
-        if target == self.value:
+        if self.value == target:
             return True
-        elif target < self.value and self.left is None:
-            return False
-        elif target >= self.value and self.right is None:
-            return False
-        elif target < self.value and self.left is not None:
-            self = self.left
-            return self.contains(target)
-        elif target >= self.value and self.right is not None:
-            self = self.right
-            return self.contains(target)
+        if target < self.value:
+            # look left, no child there
+            if not self.left:
+                return False
+            # if there is something there, recurse return
+            else:
+                return self.left.contains(target)
+        # look right, same logic as left
+        else:
+            if not self.right:
+                return False
+            else:
+                return self.right.contains(target)
+
+
+        # elif target < self.value and self.left is None:
+        #     return False
+        # elif target >= self.value and self.right is None:
+        #     return False
+        # elif target < self.value and self.left is not None:
+        #     self = self.left
+        #     return self.contains(target)
+        # elif target >= self.value and self.right is not None:
+        #     self = self.right
+        #     return self.contains(target)
 
     # Return the maximum value found in the tree
     def get_max(self):
-        while self.right is not None:
-            self = self.right
+        # if there is no right node, you've gone far right as possible, return max
+        if not self.right:
+            return self.value
+        else:
+            # recurse till you get furthest right, return
+            return self.right.get_max()
 
-        return self.value
-
+        
     # Call the function `cb` on the value of each node
     # You may use a recursive or iterative approach
     def for_each(self, cb):
