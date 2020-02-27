@@ -12,17 +12,34 @@ class BinarySearchTree:
 
     # Insert the given value into the tree
     def insert(self, value):
-        if value < self.value and self.left is None:
-            self.left = BinarySearchTree(value)
-        elif value >= self.value and self.right is None:
-            self.right = BinarySearchTree(value)
-        elif value < self.value and self.left is not None:
-            self.left.insert(value)
-        elif value >= self.value and self.right is not None:
-            self.right.insert(value)
+        # compare root node
+        if value < self.value:
+            # if lesser go left
+            if not self.left:
+                self.left = BinarySearchTree(value)
+            else:
+                # if something is already there, recursive
+                self.left.insert(value)
+        # value is greater go right of root
+        else:
+            if not self.right:
+                self.right = BinarySearchTree(value)
+            else:
+                self.right.insert(value)
+
+        # old code, refactored after watching lecture
+        #     self.left = BinarySearchTree(value)
+        # elif value >= self.value and self.right is None:
+        #     self.right = BinarySearchTree(value)
+        # elif value < self.value and self.left is not None:
+        #     self.left.insert(value)
+        # elif value >= self.value and self.right is not None:
+        #     self.right.insert(value)
+        
 
     # Return True if the tree contains the value
     # False if it does not
+
     def contains(self, target):
         if target == self.value:
             return True
